@@ -1,0 +1,42 @@
+
+contract test {
+                        
+			enum ActionChoices {GoLeft, GoRight, GoStraight}
+                        
+			function test()
+			{
+			}
+			function getChoiceExp(uint x) returns (uint d)
+			{
+				c = ActionChoices(x);
+				d = uint(c);
+			}
+			function getChoiceFromSigned(int x) returns (uint d)
+			{
+				c = ActionChoices(x);
+				d = uint(c);
+			}
+			function getChoiceFromNegativeLiteral() returns (uint d)
+			{
+				c = ActionChoices(-1);
+				d = uint(c);
+                    
+			}
+			ActionChoices c;
+		}
+contract main {
+
+    function main() { 
+          new test(); 
+          //functionCall(-1;0;getChoiceExp;0;msginfo(-1,0,2,2)); //Expected result: c=GoLeft, d=0
+          //functionCall(-1;0;getChoiceExp;1;msginfo(-1,0,2,2)); //Expected result: c=GoRight, d=0
+          //functionCall(-1;0;getChoiceExp;2;msginfo(-1,0,2,2)); //Expected result: c=GoStraight, d=0
+          //functionCall(-1;0;getChoiceExp;3;msginfo(-1,0,2,2)); //Expected result: throw
+          functionCall(-1;0;getChoiceFromSigned;-1;msginfo(-1,0,2,2)); //Expected result: throw
+          //functionCall(-1;0;getChoiceFromSigned;0;msginfo(-1,0,2,2)); //Expected result: c=GoLeft, d=0
+          //functionCall(-1;0;getChoiceFromSigned;1;msginfo(-1,0,2,2)); //Expected result: c=GoRight, d=0
+          //functionCall(-1;0;getChoiceFromSigned;2;msginfo(-1,0,2,2)); //Expected result: c=GoStraight, d=0
+          //functionCall(-1;0;getChoiceFromNegativeLiteral;;msginfo(-1,0,2,2)); //Expected result: throw
+    }
+
+}
