@@ -20,6 +20,7 @@ module CONFIGURATION
             <exeCon> true </exeCon>
             <Continue> false </Continue>
             <forInit> true </forInit>
+            <Throw> false </Throw>
             <contracts>
             <contractnum> 0:Int </contractnum>
             <Contract multiplicity = "*">
@@ -39,6 +40,20 @@ module CONFIGURATION
                 <vdim> .Map </vdim>
                 <inheritance> .K </inheritance>
                 <contractBody> .K </contractBody>
+                <enums>
+                    <Enum multiplicity = "*">
+                        <enumname> .K </enumname>
+                        <enumlist> .K </enumlist>
+                    </Enum>
+                </enums>
+                <enumsIns>
+                    <EnumIns multiplicity = "*">
+                        <insId> .K </insId>
+                        <enumInsname> .K </enumInsname>
+                        <enumInslist> .K </enumInslist>
+                    </EnumIns>
+                </enumsIns>
+                <insValue> .Map </insValue>
                 <events>
                     <Event multiplicity = "*">
                         <ename> .K </ename>
@@ -114,12 +129,21 @@ module CONFIGURATION
                 <tempStore> .Map </tempStore>
                 <tempIdStore> .Map </tempIdStore>
                 <tempMemory> .Map </tempMemory>
+                <tempType> .Map </tempType>
+                <tempLocation> .Map </tempLocation>
                 <idType> .Map </idType>
                 <idStore> .Map </idStore>
                 <Memory> .Map </Memory>
                 <ilength> .Map </ilength>
                 <idim> 1:Int </idim>
                 <ivdim> .Map </ivdim>
+                <ienums>
+                    <Ienum multiplicity = "*">
+                        <ienumname> .K </ienumname>
+                        <ienumlist> .K </ienumlist>
+                    </Ienum>
+                </ienums>
+                <iinsValue> .Map </iinsValue>
                 <ibaseaddress> .Map </ibaseaddress>
                 <iarrays>
                     <iarray multiplicity = "*">

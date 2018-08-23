@@ -272,6 +272,7 @@ rule
         <cLocation> CL </cLocation>
         <dtype> Dt </dtype>
         <dstore> Ds </dstore>
+        <insValue> IV </insValue>
         <Length> L </Length>
         <baseAddress> B </baseAddress>
         <constructor> Cst </constructor>
@@ -291,6 +292,7 @@ rule
             <idType> Dt </idType>
             <idStore> Ds </idStore>
             <Memory> .Map </Memory>
+            <iinsValue> IV </iinsValue>
             <ilength> L </ilength>
             <ibaseaddress> B </ibaseaddress>
             ...

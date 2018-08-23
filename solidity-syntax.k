@@ -91,6 +91,9 @@ syntax Expression ::= Bool | Int | String | Id |Value |ElementaryTypeName
                     | BinaryConvert(Expression,Expression) [strict]
                     | Max(Int,Int)
                     | Min(Int,Int)
+                    | GetItem(Id,Id,Identifiers,Int)
+                    | enumIns(Id,Id,Identifiers)
+                    | enumCheck(Id,Id,Identifiers)
                                          
 syntax BuiltinParam ::= "msg"	  		   [prefer]
                       | "msg.sender"   [prefer]
@@ -399,6 +402,8 @@ syntax SolidityItem ::=  pcsContractParts(Id,ContractParts)
                       | writeToAddress(Int,Expression,Id)
                       | writeIndexToAddress(Int,Expression,Int)
                       | readIndexAddress(Int,Int)
+                      | Items(Id,Id,Identifiers,Int,Int)
+                      | FindEnum(Id,Id,Identifiers,Int,Int)
          
 syntax MemOp ::= allocate(Expression,TypeName,Id,Expression,Expression)
                | read(Expression)
@@ -416,7 +421,7 @@ syntax Value1 ::= String | Uint | Byte | Fixed | Ufixed | Msg
 syntax AllValues ::= Value | Value1
 
 syntax KResult ::=  Values | AllValues
-  
+
 syntax SimpleStatement ::= VariableDefinition 
                          | SimpleExpression3 
                        //| FunctionCall 

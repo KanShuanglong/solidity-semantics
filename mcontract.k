@@ -300,12 +300,208 @@ rule
 
 //UserDefinedTypeName
 
-rule <k> pcsContractPart(C:Id, X:Id Y:FunQuantifiers Z:Id = X (V:Values);) => new X (.ExpressionList); ... </k>
+rule 
+    <k> pcsContractPart(C:Id, X:Id Y:FunQuantifiers Z:Id = X (V:Values);) => new X (.ExpressionList); ... </k>
 
-rule <k> pcsContractPart(C:Id, X:Id Y:FunQuantifiers Z:Id = new X (V:Values);) => new X (V);  ... </k>
+rule 
+    <k> pcsContractPart(C:Id, X:Id Y:FunQuantifiers Z:Id = new X (V:Values);) => new X (V);  ... </k>
      
-rule <k> pcsContractPart(C:Id,X:UsingForDeclaration) => . ... </k>  
-               
+rule 
+    <k> pcsContractPart(C:Id,X:UsingForDeclaration) => . ... </k>  
+
+//Enum
+
+rule 
+    <k> pcsContractPart(C:Id, enum X:Id { Y:Identifiers } ) => . ... </k>
+    <Contract> 
+        <cname> C </cname>
+        (.Bag =>
+            <Enum>
+                <enumname> X </enumname>
+                <enumlist> Y </enumlist>
+            </Enum>)
+        ...
+    </Contract>
+
+rule 
+    <k> pcsContractPart(C:Id, X:Id Y:FunQuantifiers Z:Id; ) => GetItem(C,Z,X,L,0) ... </k>
+    <Contract> 
+        <cname> C </cname>
+        <Enum>
+            <enumname> X </enumname>
+            <enumlist> L </enumlist>
+        </Enum>
+        (.Bag =>
+            <EnumIns> 
+                <insId> Z </insId>
+                <enumInsname> X </enumInsname>
+                <enumInslist> L </enumInslist>
+                ...
+            </EnumIns>)
+        <insValue> (.Map => Z |-> 0) ... </insValue>
+        ...
+    </Contract>
+
+rule 
+    <k> GetItem(C,Z,X,L,I) => Items(C,Z,X,L,I,0) ... </k>
+
+rule 
+    <k> Items(C,Z,X,(E:Id,L),I,N) => Items(C,Z,X,L,I,N +Int 1) ... </k>
+    requires I >Int N
+
+rule 
+    <k> Items(C,Z,X,(E:Id,L),I,I) => . ... </k>
+    <Contract> 
+        <cname> C </cname>
+        <insValue> ... (Z |-> _) => (Z |-> E) ... </insValue>
+        ...
+    </Contract>
+      
+rule 
+    <k> X:Id(Y:Int) => FindEnum(C,Z,X,L,Y,0) ... </k>
+    <contractStack> ListItem(CI:Int) ... </contractStack>
+    <contractInstance>
+        <ctId> CI </ctId>
+        <ctName> C </ctName>
+        ...
+    </contractInstance>
+    <Contract> 
+        <cname> C </cname>
+        <Enum>
+            <enumname> X </enumname>
+            <enumlist> L </enumlist>
+        </Enum>
+        <EnumIns> 
+            <insId> Z </insId>
+            <enumInsname> X </enumInsname>
+            <enumInslist> L </enumInslist>
+            ...
+        </EnumIns>
+        ...
+    </Contract>
+    requires Y >=Int 0
+
+rule <k> X:Id(Y:Int) => Id2String(E) ... </k>
+     <contractStack> ListItem(CI:Int) ... </contractStack>
+     <contractInstance>
+         <ctId> CI </ctId>
+         <ctName> C </ctName>
+         <iinsValue> ... Z |-> E ... </iinsValue>
+         ...
+     </contractInstance>
+     <Contract> 
+         <cname> C </cname>
+         <Enum>
+             <enumname> X </enumname>
+             ...
+         </Enum>
+         <EnumIns> 
+             <insId> Z </insId>
+             <enumInsname> X </enumInsname>
+             ...
+         </EnumIns>
+         ...
+     </Contract>
+     <Throw> _ => true </Throw>
+     requires Y <Int 0
+
+rule 
+    <k> X:Id(Y:Int,.ExpressionList) => X(Y) ... </k>
+
+rule 
+    <k> FindEnum(C,Z,X,(E:Id,L),I,N) => FindEnum(C,Z,X,L,I,N +Int 1) ... </k>
+    requires I >Int N
+
+rule 
+    <k> FindEnum(C,Z,X,(E:Id,L),I,I) => Id2String(E) ... </k>
+
+rule 
+    <k> FindEnum(C,Z,X,.Identifiers,I,N) => Id2String(E) ... </k>
+    <contractStack> ListItem(CI:Int) ... </contractStack>
+    <contractInstance>
+        <ctId> CI </ctId>
+        <ctName> C </ctName>
+        <iinsValue> ... Z |-> E ... </iinsValue>
+        ...
+    </contractInstance>
+    <Throw> _ => true </Throw>
+
+rule 
+    <k> T:ElementaryTypeName (X:Expression) => 0 ... </k>
+
+rule 
+    <k> X,.ExpressionList => X ... </k>
+            
+rule 
+    <k> (X:Id.Y:Id):MemberAccess => enumIns(X,Y,L) ... </k>
+    <contractStack> ListItem(CI:Int) ... </contractStack>
+    <contractInstance>
+        <ctId> CI </ctId>
+        <ctName> Name </ctName>
+        ...
+    </contractInstance>
+    <Contract>
+        <cname> Name </cname>
+        <Enum>
+            <enumname> X </enumname>
+            <enumlist> L </enumlist>
+            ...
+        </Enum>
+        ...
+    </Contract> 
+         
+rule 
+    <k> enumIns(X,Y,L) => enumCheck(X,Y,L) ... </k>  
+
+rule 
+    <k> enumCheck(X,Y,(Y,Lr)) => Id2String(Y) ... </k>
+         
+rule 
+    <k> enumCheck(X,Y,(Z,Lr)) => enumCheck(X,Y,Lr) ... </k>
+    requires Id2String(Z) =/=String Id2String(Y)
+
+rule 
+    <k> enumCheck(X,Y,.Identifiers) => 0 ... </k>
+
+rule 
+    <k> X:Id = Y:String => write(X,Y) ... </k>
+
+rule 
+    <k> write(X:Id,Y:String) => 1 ... </k>
+    <contractStack> ListItem(CI:Int) ... </contractStack>
+    <contractInstance>
+        <ctId> CI </ctId>
+        <ctName> Name </ctName>
+        <iinsValue> ... (X |-> _) => (X |-> String2Id(Y)) ... </iinsValue>
+        ...
+    </contractInstance>
+    <Contract>
+        <cname> Name </cname>
+        <EnumIns>
+            <insId> X </insId>
+            ...
+        </EnumIns>
+        ...
+    </Contract> 
+
+rule 
+    <k> read(X:Id) => Id2String(I) ... </k>
+    <contractStack> ListItem(CI:Int) ... </contractStack>
+        <contractInstance>
+        <ctId> CI </ctId>
+        <ctName> Name </ctName>
+        <iinsValue> ...X |-> I ...</iinsValue>
+        ...
+    </contractInstance>
+    <Contract>
+        <cname> Name </cname>
+        <EnumIns>
+            <insId> X </insId>
+            ...
+        </EnumIns>
+        ...
+    </Contract> 
+
 //For elementary type names in the main contract
      
 rule 
@@ -334,7 +530,7 @@ rule
         <ctLocation> (.Map => X |-> Y) ... </ctLocation>
         ...
     </contractInstance>
- 
+
 rule 
     <k> T:NotBool Y:StorageLocations X:Id =>  allocate(CI,T,String2Id("Local"),X,0) ...</k>
     <contractStack> ListItem(CI:Int) ... </contractStack>
@@ -651,8 +847,8 @@ rule
         ...
     </Contract>    
 
-rule  
-    <k> pcsContractPart(C:Id, X:Id S:FunQuantifiers Y:Id;) => allocate(C,X,String2Id("Global"),Y,0) ... </k>
+//rule  
+    //<k> pcsContractPart(C:Id, X:Id S:FunQuantifiers Y:Id;) => allocate(C,X,String2Id("Global"),Y,0) ... </k>
 
 rule  
     <k> SetStructSize(C:Id,X:Id,Y:Id) =>  . ... </k>
@@ -670,7 +866,7 @@ rule
         ...
     </Contract>   
 
-rule <k> pcsContractPart(C:Id, X:Id Y:FunQuantifiers Z:Id;) => pcsContractPart(C:Id, address Y Z;)... </k>
+//rule <k> pcsContractPart(C:Id, X:Id Y:FunQuantifiers Z:Id;) => pcsContractPart(C:Id, address Y Z;)... </k>
 
 //StructDefinition
 
