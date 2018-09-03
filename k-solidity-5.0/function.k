@@ -347,9 +347,10 @@ rule <k> pcsContractPart(C:Id, function F:Id (P1:FParameters) .FunQuantifiers
 //Functioncall
 
      rule [function-call]:
-        <k> functionCall(F:Id ; Es:Values) => FunQs(FQ,F) ~> Call(F,Es)  ... </k>
+        <k> functionCall(F:Id ; Es:Values) => 
+	    		 #pushCallStack ~> FunQs(FQ,F)  ~> BindParam(Ps,Es) 
+                         ~> funBody(Con, B) ~> #popCallStack ... </k>
         <contractStack> ListItem(CI:Int) ... </contractStack>
-    
         <contractInstance>
      	  <ctId> CI </ctId>
           <ctname> Cn:Id </ctname>
@@ -372,7 +373,12 @@ rule <k> pcsContractPart(C:Id, function F:Id (P1:FParameters) .FunQuantifiers
 	   ...
         </Function>
 
-      rule <k> Call(F:Id,Es:Values) => BindParam(Ps,Es) ~> /*if(Con){B}*/ funBody(Con,B) ~> UpdateTemp(CI)  ... </k>
+    /********* Commented by Kan ******************/
+    /*         It seems that we don't need this Call item      */
+
+/*
+      rule <k> Call(F:Id,Es:Values) => BindParam(Ps,Es) ~> /*if(Con){B}*/ funBody(Con,B) ~> UpdateTemp(CI)
+  ... </k>
            <contractStack> ListItem(CI:Int) ... </contractStack>
            <contractInstance>
      	       <ctId> CI </ctId>
@@ -403,6 +409,8 @@ rule <k> pcsContractPart(C:Id, function F:Id (P1:FParameters) .FunQuantifiers
                <FunCon> Con </FunCon>
 	       ...
            </Function>
+*/
+
 
       rule <k> UpdateTemp(CI) => . ... </k>   
            <contractStack> ListItem(CI:Int) ... </contractStack>
@@ -590,6 +598,18 @@ rule <k> pcsContractPart(C:Id, function F:Id (P1:FParameters) .FunQuantifiers
 
       rule <k> return; => . ... </k>
            <funCond> _=>false </funCond>
+
+
+// added by Kan
+rule { Ss:Statements } => #pushCallStack ~> Ss ~> #popCallStack
+
+rule <k> #pushCallStack => . ... </k>
+     <env> Rho:Map </env>
+     <envStack> .List => ListItem(Rho) ...   </envStack>
+
+rule <k> #popCallStack => . ... </k>
+     <env> _:Map => Rho </env>
+     <envStack>  ListItem(Rho:Map) => .List  ...   </envStack>
 
 
 endmodule

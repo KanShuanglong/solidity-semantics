@@ -302,10 +302,9 @@ imports CONFIGURATION
 
 //Functioncall
 
-       rule [function-call]:
+    rule [function-call]:
         <k> functionCall(F:Id ; Es:Values) => FunQs(FQ,F) ~> Call(F,Es)  ... </k>
         <contractStack> ListItem(CI:Int) ... </contractStack>
-    
         <contractInstance>
      	  <ctId> CI </ctId>
           <ctname> Cn:Id </ctname>

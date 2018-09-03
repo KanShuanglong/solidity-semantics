@@ -15,6 +15,7 @@ imports SOLIDITY-SYNTAX
                   <thread multiplicity="*" color="blue">
                       <k color="green"> $PGM:SourceUnit </k> 
                       <env color="LightSkyBlue"> .Map </env>
+		      <envStack> .List </envStack>
 	              <contractStack> ListItem(-1) </contractStack>
                       <functionStack> .List </functionStack>
                       <newStack> .List </newStack>

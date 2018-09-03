@@ -33,9 +33,9 @@ imports SOLIDITY-SYNTAX
                 <contracts>
                   <contractnum> 0:Int </contractnum>
 	             <contract multiplicity = "*">
-	                <cname> .K  </cname>
-    
-                        <cId> (-1):Int </cId>
+	                <cname> .K  </cname>		//name of the contract
+    			
+                        <cId> (-1):Int </cId>		//index of the contract
                         <cfunction> .Map </cfunction> 
                         
 	                <vnum> 0:Int </vnum>  
