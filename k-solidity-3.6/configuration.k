@@ -17,6 +17,7 @@ imports SOLIDITY-SYNTAX
                       <env color="LightSkyBlue"> .Map </env>
 	              <contractStack> ListItem(-1) </contractStack>
                       <functionStack> .List </functionStack>
+		      <envStack> .List </envStack>
                       <newStack> .List </newStack>
                   </thread>
                 </threads>
@@ -133,6 +134,8 @@ imports SOLIDITY-SYNTAX
                         <ctType> .Map </ctType>
                         <ctstore> .Map </ctstore>
                         <ctLocation> .Map </ctLocation>
+
+			/* This configuration needs to be discussed again*/
                         <tempContext> .Map </tempContext>
                         <tempStore> .Map </tempStore>
                         <tempdistore> .Map </tempdistore>
@@ -152,7 +155,6 @@ imports SOLIDITY-SYNTAX
                             <idimensions>  .Map </idimensions>
                           </iarray>
                        </iarrays>
-                         
 	             </contractInstance>
 	          </contractInstances>
 

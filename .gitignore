@@ -1,3 +1,5 @@
 solidity-kompiled
 .DS_Store
 *.k~
+
+k-solidity-5\.0/Makefile

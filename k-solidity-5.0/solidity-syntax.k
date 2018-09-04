@@ -205,6 +205,8 @@ module SOLIDITY-SYNTAX
 
 
 
+   syntax Id
+   	  ::= "Main"
 
 
   syntax OtherContractPart ::=  

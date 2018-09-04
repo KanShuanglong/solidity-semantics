@@ -158,7 +158,7 @@ imports SOLIDITY-SYNTAX
 
                   <transactions>
                      <cnttran> 1:Int </cnttran>
-	             <trancomputation> 0 |-> "Main"  </trancomputation>
+	             <trancomputation> 0 |-> Main  </trancomputation>
 	          </transactions>
                   <Msg> .K </Msg>
                   <MsgStack> .List </MsgStack>
