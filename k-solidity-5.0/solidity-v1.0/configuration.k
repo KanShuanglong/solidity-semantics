@@ -6,8 +6,11 @@ syntax Int
        ::= "#undef_Int"
 
 configuration
-  <k> $PGM:SourceUnit </k>
-  <callStack> .List </callStack>
+  <executionSetting> 
+     <k> $PGM:SourceUnit </k>
+     <env> .Map </env>
+     <callStack> .List </callStack>
+  </executionSetting>
 
   /*
      The configuration for storing contract definitions
@@ -46,16 +49,18 @@ configuration
 	   <body> .K </body>
 	</function>
     </functions>
-  </contracts>
 
-  /******************** struct ****************/
+    /******************** struct ****************/
   
-  <structs>
-    <struct multiplicity="*">
+    <structs>
+      <struct multiplicity="*">
     	 <sname> .K </sname>
 	 <sfields> .Map </sfields>
-    </struct>
-  </structs>
+      </struct>
+    </structs>
+
+    
+  </contracts>
 
   /**********************************
     Contract Instance
